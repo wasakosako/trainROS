@@ -1,0 +1,19 @@
+name: DevContainer CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Dev Container をビルド or pull して再利用
+      - name: Build and test inside devcontainer
+        uses: devcontainers/ci@v0.3 # Build & Run アクション :contentReference[oaicite:2]{index=2}
+        with:
+          push: never # ghcr へ push したい時は 'filter'
+          runCmd: |
+            . /opt/ros/humble/setup.bash
+            colcon test --event-handlers console_direct+
