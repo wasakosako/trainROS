@@ -1,35 +1,42 @@
 {
-  "name": "ROS2 Humble",
+  "name": "ROS2 Jazzy",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-
   // コンテナ起動後、ワークスペースをビルド
-  "postCreateCommand": "source /opt/ros/humble/setup.bash && colcon build --symlink-install",
-
+  "postCreateCommand": "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install",
+    // bind mount
+  "mounts": [
+    "source=${localWorkspaceFolder}/src,target=/workspaces/ros_ws/src,type=bind"
+  ],
   // VS Code 拡張を自動インストール
   "extensions": [
     "ms-iot.vscode-ros",
     "ms-vscode.cpptools",
     "ms-azuretools.vscode-docker"
   ],
-
   // 推奨設定（例：ターミナルで常に ROS 設定を読む）
   "settings": {
+    //新規にターミナルが呼ばれたときの動作設定
     "terminal.integrated.profiles.linux": {
-      "bash": {
+      "ROS-Jazzy": {
         "path": "bash",
-        "args": ["-l", "-c", "source /opt/ros/humble/setup.bash && bash"]
+        "args": [
+          "-l",
+          "-c",
+          //opt配下のAPTで持ってきた環境を読み込む&&シェルを起動
+          "source /opt/ros/jazzy/setup.bash && bash"
+        ]
       }
     },
-    "terminal.integrated.defaultProfile.linux": "bash"
+    "terminal.integrated.defaultProfile.linux": "ROS-Jazzy"
   },
-
   // 作業用ポートを自動フォワード
-  "forwardPorts": [11311, 22333],
-
-  // ホスト UID と合わせると Volume 関連のパーミッションずれ対策に◎
-  // "remoteUser": "vscode",   ← これをコメントアウト
+  "forwardPorts": [
+    11311,
+    22333
+  ],
+  // とりあえず練習環境だから全員root
   "remoteUser": "root"
 }
