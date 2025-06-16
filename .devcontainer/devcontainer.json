@@ -8,7 +8,7 @@
   "postCreateCommand": "bash -c 'source /opt/ros/jazzy/setup.bash && colcon build --symlink-install'",
   // bind mount
   "mounts": [
-    "type=bind,source=${localWorkspaceFolder}/src,target=/workspaces/ros_ws/src"
+    "type=bind,source=${localWorkspaceFolder}/src,target=/workspaces/trainROS/src"
   ],
   // VS Code 拡張を自動インストール
   "extensions": [
