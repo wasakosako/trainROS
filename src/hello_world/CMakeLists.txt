@@ -20,18 +20,18 @@ endfunction()
 
 # talkerノードのビルド設定
 custom_executable(talker)
-#custom_executable(talker_with_service)
-#custom_executable(talker_with_service_param)
+custom_executable(talker_with_service)
+custom_executable(talker_with_service_param)
 # listenerノードのビルド設定
 custom_executable(listener)
 # client_syncノードのビルド設定
-#custom_executable(client_sync)
+custom_executable(client_sync)
 # client_asyncノードのビルド設定
-#custom_executable(client_async)
+custom_executable(client_async)
 # talker/listenerノードのプロセス間通信のビルド設定
-#custom_executable(talker_listener_composition)
+custom_executable(talker_listener_composition)
 # パラメータ取得・設定ノードのビルド設定
-#custom_executable(set_and_get_parameters)
+custom_executable(set_and_get_parameters)
 
 include_directories(include)
 

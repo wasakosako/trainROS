@@ -18,11 +18,22 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 
-class Listener : public rclcpp::Node
+#include "hello_world/visibility_control.h"
+
+using namespace std::chrono_literals;
+
+// ネームスペースの設定
+namespace hello_world
+{
+
+class ListenerComponent : public rclcpp::Node
 {
 public:
-  explicit Listener(const std::string & topic_name)
-  : Node("listener")
+  // マルチOSに対応した共有ライブラリの最適化
+  HELLO_WORLD_PUBLIC
+  // コンストラクター引数をNodeOptionsに変更
+  explicit ListenerComponent(const rclcpp::NodeOptions & options)
+  : Node("listener_component", options)
   {
     // chatterトピックのコールバック関数
     auto callback =
@@ -34,20 +45,16 @@ public:
     // chatterトピックの受信設定
     rclcpp::QoS qos(rclcpp::KeepLast(10));
     sub_ = create_subscription<std_msgs::msg::String>(
-      topic_name, qos, callback);
+      "chatter", qos, callback);
   }
 
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub_;
-};
+};  // class ListenerComponent
 
-int main(int argc, char * argv[])
-{
-  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
-  rclcpp::init(argc, argv);
+}  // namespace hello_world
 
-  auto node = std::make_shared<Listener>("chatter");
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  return 0;
-}
+#include "rclcpp_components/register_node_macro.hpp"
+
+// クラスローダーにコンポーネントを登録
+RCLCPP_COMPONENTS_REGISTER_NODE(hello_world::ListenerComponent)
